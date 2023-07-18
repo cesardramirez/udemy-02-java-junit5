@@ -4,11 +4,12 @@ import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
-import static org.junit.jupiter.api.Assertions.assertNotNull;
+import static org.junit.jupiter.api.Assertions.*;
 
 class CalculatorTest {
 
   private Calculator calculator;
+  private Calculator calculatorNull;
 
   /**
    * Este método se ejecuta antes de cada método de prueba.
@@ -32,9 +33,30 @@ class CalculatorTest {
   }
 
   @Test
-  void calculatorNotNullTest() {
+  void testCalculatorNotNull() {
     assertNotNull(calculator, "Calculator no debe ser nulo.");
 
     System.out.println("@Test -> calculatorNotNullTest()");
+  }
+
+  @Test
+  void testCalculatorNull() {
+    assertNull(calculatorNull);
+
+    System.out.println("@Test -> calculatorNullTest()");
+  }
+
+  @Test
+  void testAddNumbersMethod() {
+    // arrange
+    Calculator calculatorAssert = new Calculator();
+
+    // action
+    int result = calculatorAssert.addNumbers(10, 20);
+
+    // assert
+    assertEquals(30, result);
+
+    System.out.println("@Test -> testAddNumbersMethod()");
   }
 }
