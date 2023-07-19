@@ -56,7 +56,32 @@ class CalculatorTest {
 
     // assert
     assertEquals(30, result);
+    assertEquals(1, 1.4, 0.5);  // true, ya que 1.4 está entre 1 y 1.5.
 
     System.out.println("@Test -> testAddNumbersMethod()");
+  }
+
+  @Test
+  void testSameObject() {
+    // arrange
+    Calculator calculator1 = new Calculator();
+    Calculator calculator2 = new Calculator();
+    Calculator calculator3 = calculator1;
+
+    // assert
+    assertSame(calculator3, calculator1);
+    assertNotSame(calculator3, calculator2);
+  }
+
+  @Test
+  void testSubtractNumbers_whenResultIsNegative() {
+    // arrange
+    Calculator calculatorAssert = new Calculator();
+
+    // action
+    int result = calculatorAssert.subtractNumbers(10, 20);
+
+    // assert
+    assertEquals(-10, result);
   }
 }
