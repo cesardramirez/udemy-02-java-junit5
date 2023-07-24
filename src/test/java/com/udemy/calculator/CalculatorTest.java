@@ -1,8 +1,6 @@
 package com.udemy.calculator;
 
-import org.junit.jupiter.api.AfterEach;
-import org.junit.jupiter.api.BeforeEach;
-import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.*;
 
 import static org.junit.jupiter.api.Assertions.*;
 
@@ -93,7 +91,12 @@ class CalculatorTest {
     assertEquals(-10, result);
   }
 
+  /**
+   * La anotación @DisplayName("message") permite cambiarle el nombre al test.
+   * No es recomendable ya que el nombre del test es fácil de ubicar con el nombre de la función.
+   */
   @Test
+  @DisplayName("Test para el método dividir números")
   void testDivideNumbersMethod() {
     assertEquals(2, calculator.divideNumbers(10, 5));
   }
@@ -111,5 +114,28 @@ class CalculatorTest {
     String expectedMessage = "No se puede dividir por cero";
 
     assertTrue(actualMessage.contains(expectedMessage));
+  }
+
+  /**
+   * La anotación @Disabled descarma un test para que no sea ejecutado (omitido).
+   */
+  @Test
+  @Disabled("pending bug to review")
+  void testDivideNumbersMethodBug() {
+    assertEquals(3, calculator.divideNumbers(10, 5));
+  }
+
+  /**
+   * Comúnmente, un método test que tenga varios assert, donde falle el primero, no se ejecutará el resto.
+   * Con assertAll() se ejecutan TODOS los assert indicados y el test será exitoso
+   *   si todos los assert se se cumplen.
+   */
+  @Test
+  void testAssertAllCalculator() {
+    assertAll(
+            () -> assertEquals(30, calculator.addNumbers(10, 20)),
+            () -> assertNull(calculatorNull),
+            () -> assertEquals(5, calculator.divideNumbers(10, 2))
+    );
   }
 }
