@@ -46,6 +46,10 @@ class CalculatorTest {
     System.out.println("@Test -> calculatorNullTest()");
   }
 
+  /**
+   * assertEquals(expected, actual, delta):
+   * Con base al valor actual se verifica si cumple con el rango de delta esperado.
+   */
   @Test
   void testAddNumbersMethod() {
     // arrange
@@ -61,6 +65,10 @@ class CalculatorTest {
     System.out.println("@Test -> testAddNumbersMethod()");
   }
 
+  /**
+   * assertSame() y assertNotSame():
+   * Validar si un objeto es el mismo (con todos su valores) o no es el mismo.
+   */
   @Test
   void testSameObject() {
     // arrange
@@ -74,7 +82,7 @@ class CalculatorTest {
   }
 
   @Test
-  void testSubtractNumbers_whenResultIsNegative() {
+  void testSubtractNumbersMethod_whenResultIsNegative() {
     // arrange
     Calculator calculatorAssert = new Calculator();
 
@@ -83,5 +91,25 @@ class CalculatorTest {
 
     // assert
     assertEquals(-10, result);
+  }
+
+  @Test
+  void testDivideNumbersMethod() {
+    assertEquals(2, calculator.divideNumbers(10, 5));
+  }
+
+  /**
+   * assertThrows(Exception.class, () -> methodToTest()):
+   * Valida si se genera una excepción en particular y los valores dentro de esta.
+   */
+  @Test
+  void shouldThrowException_whenDivideByZero() {
+    Exception exception = assertThrows(ArithmeticException.class,
+            () -> calculator.divideNumbers(10, 0));
+
+    String actualMessage = exception.getMessage();
+    String expectedMessage = "No se puede dividir por cero";
+
+    assertTrue(actualMessage.contains(expectedMessage));
   }
 }
