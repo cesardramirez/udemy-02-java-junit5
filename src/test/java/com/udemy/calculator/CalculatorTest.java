@@ -8,6 +8,18 @@ class CalculatorTest {
 
   private Calculator calculator;
   private Calculator calculatorNull;
+  private static Calculator calculatorStatic;
+
+  /**
+   * Este método se ejecuta al inicio de la clase de test una única vez.
+   * Es útil si se desea inicializar una única vez una base de datos o un objeto con unas características en particular.
+   * Este método debe ser estático al igual que sus variables.
+   */
+  @BeforeAll
+  static void beforeAll() {
+    calculatorStatic = new Calculator();
+    System.out.println("@BeforeAll -> beforeAll() \n");
+  }
 
   /**
    * Este método se ejecuta antes de cada método de prueba.
@@ -27,11 +39,23 @@ class CalculatorTest {
   @AfterEach
   void tearDown() {
     calculator = null;
-    System.out.println("@AfterEach -> tearDown()");
+    System.out.println("@AfterEach -> tearDown() \n");
+  }
+
+  /**
+   * Este método se ejecuta al final de la clase de test una única vez.
+   * Es útil si se desea finalizar una única vez una base de datos o un objeto con unas características en particular.
+   * Este método debe ser estático al igual que sus variables.
+   */
+  @AfterAll
+  static void afterAll() {
+    calculatorStatic = null;
+    System.out.println("@afterAll -> afterAll() \n");
   }
 
   @Test
   void testCalculatorNotNull() {
+    assertNotNull(calculatorStatic);
     assertNotNull(calculator, "Calculator no debe ser nulo.");
 
     System.out.println("@Test -> calculatorNotNullTest()");
