@@ -138,4 +138,26 @@ class CalculatorTest {
             () -> assertEquals(5, calculator.divideNumbers(10, 2))
     );
   }
+
+  /**
+   * La anotación @Nested permite agrupar un conjunto de tests, útil si un método tiene varias casuísticas.
+   * Por ejemplo, si en un método en particular espero que devuelva un valor positivo, negativo o cero.
+   */
+  @Nested
+  class TestAddNumbersMethod {
+    @Test
+    public void testAddNumbersMethod_whenNumbersArePositive() {
+      assertEquals(30, calculator.addNumbers(15, 15));
+    }
+
+    @Test
+    public void testAddNumbersMethod_whenNumbersAreNegative() {
+      assertEquals(-30, calculator.addNumbers(-15, -15));
+    }
+
+    @Test
+    public void testAddNumbersMethod_whenNumbersAreZero() {
+      assertEquals(0, calculator.addNumbers(0, 0));
+    }
+  }
 }
