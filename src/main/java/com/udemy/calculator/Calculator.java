@@ -21,4 +21,12 @@ public class Calculator {
     result = num1 / num2;
     return result;
   }
+
+  public void longTaskOperation() {
+    try {
+      Thread.sleep(1000);
+    } catch (InterruptedException e) {
+      throw new RuntimeException(e);
+    }
+  }
 }

@@ -5,6 +5,7 @@ import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.Arguments;
 import org.junit.jupiter.params.provider.MethodSource;
 
+import java.time.Duration;
 import java.util.stream.Stream;
 
 import static org.junit.jupiter.api.Assertions.*;
@@ -195,9 +196,9 @@ class CalculatorTest {
    * Para no crear varios test con varios assertEquals se puede utilizar las siguientes anotaciones:
    *   @ParameterizedTest : Define la estructura del mensaje que se va a mostrar en el log del test.
    *   @MethodSource("methodName") : Define el método donde se va a abtener la data con Arguments.
-   * @param num1
-   * @param num2
-   * @param result
+   * @param num1 number one.
+   * @param num2 number two.
+   * @param result of operation sum.
    */
   @ParameterizedTest(name = "[{index}] : num1={0}, num2={1}, result={2}")
   @MethodSource("addProviderData")
@@ -213,5 +214,15 @@ class CalculatorTest {
             Arguments.of(-6, 2, -4),
             Arguments.of(6, 0, 6)
     );
+  }
+
+  /**
+   * assertTimeout(Duration.ofMillis(500), () -> methodToTest()):
+   * Valida si el método no supera un tiempo estimado en ejecutarse.
+   *   Eg : Si el método dura 1000 milisegundos pero se espera que dure 500 milisegundos, fallará el test si se especifica este valor.
+   */
+  @Test
+  void testLongTaskOperation() {
+    assertTimeout(Duration.ofMillis(2000), () -> calculator.longTaskOperation());
   }
 }
