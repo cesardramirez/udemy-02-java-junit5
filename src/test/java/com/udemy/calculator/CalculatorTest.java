@@ -1,6 +1,11 @@
 package com.udemy.calculator;
 
 import org.junit.jupiter.api.*;
+import org.junit.jupiter.params.ParameterizedTest;
+import org.junit.jupiter.params.provider.Arguments;
+import org.junit.jupiter.params.provider.MethodSource;
+
+import java.util.stream.Stream;
 
 import static org.junit.jupiter.api.Assertions.*;
 
@@ -183,5 +188,30 @@ class CalculatorTest {
     public void testAddNumbersMethod_whenNumbersAreZero() {
       assertEquals(0, calculator.addNumbers(0, 0));
     }
+  }
+
+  /**
+   * Existe la posibilidad de crear casuísticas para un mismo test.
+   * Para no crear varios test con varios assertEquals se puede utilizar las siguientes anotaciones:
+   *   @ParameterizedTest : Define la estructura del mensaje que se va a mostrar en el log del test.
+   *   @MethodSource("methodName") : Define el método donde se va a abtener la data con Arguments.
+   * @param num1
+   * @param num2
+   * @param result
+   */
+  @ParameterizedTest(name = "[{index}] : num1={0}, num2={1}, result={2}")
+  @MethodSource("addProviderData")
+  void testAddNumbersMethodWithParameterizedTest(int num1, int num2, int result) {
+    assertEquals(result, calculator.addNumbers(num1, num2));
+  }
+
+  private static Stream<Arguments> addProviderData() {
+    return Stream.of(
+            Arguments.of(6, 2, 8),
+            Arguments.of(-6, -2, -8),
+            Arguments.of(6, -2, 4),
+            Arguments.of(-6, 2, -4),
+            Arguments.of(6, 0, 6)
+    );
   }
 }
