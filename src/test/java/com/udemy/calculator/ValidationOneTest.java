@@ -7,10 +7,9 @@ import org.mockito.Mockito;
 
 import static org.mockito.Mockito.verify;
 
-class ValidationTest {
+class ValidationOneTest {
 
   private Validation validation;
-
   private ValidNumber validNumber;
 
   @BeforeEach
