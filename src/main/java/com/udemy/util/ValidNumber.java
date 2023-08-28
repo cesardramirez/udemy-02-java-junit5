@@ -10,4 +10,16 @@ public class ValidNumber {
       return false;
     }
   }
+
+  public boolean isZeroNumber(Object obj) {
+    if (obj instanceof Integer) {
+      if ((Integer) obj == 0) {
+        throw new ArithmeticException("No puede ser cero.");
+      } else {
+        return true;
+      }
+    } else {
+      return false;
+    }
+  }
 }

@@ -52,8 +52,16 @@ class ValidationTwoTest {
   }
 
   @Test
-  void testAddNumbers_xwhenBothObjectsAreNumbers() {
+  void testAddNumbers_whenEitherOfTheTwoObjectsIsNotANumber() {
+    // Arrange
+    when(validNumber.isValidNumber(3)).thenReturn(true);
+    when(validNumber.isValidNumber("a")).thenReturn(false);
 
-    //when either of the two objects is not a number
+    // Action
+    validation.addNumbers(3, "a");
+
+    // Assert
+    verify(validNumber).isValidNumber(3);
+    verify(validNumber).isValidNumber("a");
   }
 }

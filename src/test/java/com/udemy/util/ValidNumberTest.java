@@ -3,8 +3,7 @@ package com.udemy.util;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
-import static org.junit.jupiter.api.Assertions.assertFalse;
-import static org.junit.jupiter.api.Assertions.assertTrue;
+import static org.junit.jupiter.api.Assertions.*;
 
 class ValidNumberTest {
 
@@ -28,5 +27,20 @@ class ValidNumberTest {
   @Test
   void testIsValidNumber_whenIsStringValue() {
     assertFalse(validNumber.isValidNumber("text"));
+  }
+
+  @Test
+  void testIsZeroNumber_shouldReturnAnException_whenIsZeroValue() {
+    assertThrows(ArithmeticException.class, () -> validNumber.isZeroNumber(0));
+  }
+
+  @Test
+  void testIsZeroNumber_whenNumberIsNegative() {
+    assertTrue(validNumber.isZeroNumber(-57));
+  }
+
+  @Test
+  void testIsZeroNumber_whenIsStringValue() {
+    assertFalse(validNumber.isZeroNumber("5"));
   }
 }
