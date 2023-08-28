@@ -5,7 +5,9 @@ import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.mockito.Mockito;
 
+import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.mockito.Mockito.verify;
+import static org.mockito.Mockito.when;
 
 class ValidationOneTest {
 
@@ -31,12 +33,28 @@ class ValidationOneTest {
    */
   @Test
   void testAddNumbers() {
-
-    // Arrange, Action,
+    // Action
     validation.addNumbers(3, 2);
 
     // Assert
     verify(validNumber).isValidNumber(3);
     //verify(validNumber).isValidNumber(2);
+  }
+
+  /**
+   * when(mock.method()).thenReturn(value) : Se define un comportamiento específico para el mock.
+   *   Cuando llame al método específico retorne un valor en específico.
+   */
+  @Test
+  void testAddNumbers_withTheWhenMethod() {
+    // Arrange
+    when(validNumber.isValidNumber(3)).thenReturn(false);
+
+    // Action
+    boolean result = validNumber.isValidNumber(3);
+
+    // Assert
+    verify(validNumber).isValidNumber(3);
+    assertFalse(result);
   }
 }

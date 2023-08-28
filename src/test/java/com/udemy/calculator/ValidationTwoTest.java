@@ -8,6 +8,7 @@ import org.mockito.Mock;
 import org.mockito.MockitoAnnotations;
 
 import static org.mockito.Mockito.verify;
+import static org.mockito.Mockito.when;
 
 /**
  * La anotación @InjectMocks crea una instancia e inyecta todos los mocks creados con la anotación @Mock.
@@ -29,11 +30,30 @@ class ValidationTwoTest {
 
   @Test
   void testAddNumbers() {
-
-    // Arrange, Action,
+    // Action
     validation.addNumbers(3, 2);
 
     // Assert
     verify(validNumber).isValidNumber(3);
+  }
+
+  @Test
+  void testAddNumbers_whenBothObjectsAreNumbers() {
+    // Arrange
+    when(validNumber.isValidNumber(3)).thenReturn(true);
+    when(validNumber.isValidNumber(2)).thenReturn(true);
+
+    // Action
+    validation.addNumbers(3, 2);
+
+    // Assert
+    verify(validNumber).isValidNumber(3);
+    verify(validNumber).isValidNumber(2);
+  }
+
+  @Test
+  void testAddNumbers_xwhenBothObjectsAreNumbers() {
+
+    //when either of the two objects is not a number
   }
 }
