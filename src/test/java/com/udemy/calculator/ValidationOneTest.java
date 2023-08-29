@@ -5,9 +5,11 @@ import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.mockito.Mockito;
 
+import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.junit.jupiter.api.Assertions.assertThrows;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 
@@ -48,7 +50,7 @@ class ValidationOneTest {
    *   Cuando llame al método específico retorne un valor en específico.
    */
   @Test
-  void testIsValidNumber_withTheThenReturnMethod() {
+  void testIsValidNumber_withThenReturnMethod() {
     // Arrange
     when(validNumber.isValidNumber(3)).thenReturn(false);
 
@@ -62,9 +64,10 @@ class ValidationOneTest {
 
   /**
    * when(mock.method()).thenThrow(exception) : Cuando llame al método específico retornará una excepción.
+   * Opción 1.
    */
   @Test
-  void testIsValidNumber_withTheThenThrowMethod_OptionOne() {
+  void testIsValidNumber_withThenThrowMethod_OptionOne() {
     // Arrange
     when(validNumber.isZeroNumber(0)).thenThrow(new ArithmeticException("No puede ser cero."));
 
@@ -80,12 +83,43 @@ class ValidationOneTest {
     assertNotNull(exception);
   }
 
+  /**
+   * when(mock.method()).thenThrow(exception)
+   * Opción 2.
+   */
   @Test
-  void testIsValidNumber_withTheThenThrowMethod_OptionTwo() {
+  void testIsValidNumber_withThenThrowMethod_OptionTwo() {
     // Arrange
     when(validNumber.isZeroNumber(0)).thenThrow(ArithmeticException.class);
 
-    // Assert
+    // Action - Assert
     assertThrows(ArithmeticException.class, () -> validNumber.isZeroNumber(0));
+  }
+
+  /**
+   * when(mock.method()).thenCallRealMethod() : Llama al método real, por lo cuál hace el proceso interno del método
+   *   (a diferencia de un mock que sólo se define el valor de respuesta).
+   * Opción 1.
+   */
+  @Test
+  void testIsValidNumber_withThenCallRealMethod_OptionOne() {
+    // Arrange
+    when(validNumber.isValidNumber(3)).thenCallRealMethod();
+
+    // Action - Assert
+    assertTrue(validNumber.isValidNumber(3));
+  }
+
+  /**
+   * when(mock.method()).thenCallRealMethod()
+   * Opción 2.
+   */
+  @Test
+  void testIsValidNumber_withThenCallRealMethod_OptionTwo() {
+    // Arrange
+    when(validNumber.isValidNumber("a")).thenCallRealMethod();
+
+    // Action - Assert
+    assertFalse(validNumber.isValidNumber("a"));
   }
 }
