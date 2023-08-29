@@ -6,6 +6,8 @@ import org.junit.jupiter.api.Test;
 import org.mockito.Mockito;
 
 import static org.junit.jupiter.api.Assertions.assertFalse;
+import static org.junit.jupiter.api.Assertions.assertNotNull;
+import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 
@@ -46,7 +48,7 @@ class ValidationOneTest {
    *   Cuando llame al método específico retorne un valor en específico.
    */
   @Test
-  void testAddNumbers_withTheWhenMethod() {
+  void testIsValidNumber_withTheThenReturnMethod() {
     // Arrange
     when(validNumber.isValidNumber(3)).thenReturn(false);
 
@@ -56,5 +58,34 @@ class ValidationOneTest {
     // Assert
     verify(validNumber).isValidNumber(3);
     assertFalse(result);
+  }
+
+  /**
+   * when(mock.method()).thenThrow(exception) : Cuando llame al método específico retornará una excepción.
+   */
+  @Test
+  void testIsValidNumber_withTheThenThrowMethod_OptionOne() {
+    // Arrange
+    when(validNumber.isZeroNumber(0)).thenThrow(new ArithmeticException("No puede ser cero."));
+
+    // Action
+    Exception exception = null;
+    try {
+      validNumber.isZeroNumber(0);
+    } catch (ArithmeticException e) {
+      exception = e;
+    }
+
+    // Assert
+    assertNotNull(exception);
+  }
+
+  @Test
+  void testIsValidNumber_withTheThenThrowMethod_OptionTwo() {
+    // Arrange
+    when(validNumber.isZeroNumber(0)).thenThrow(ArithmeticException.class);
+
+    // Assert
+    assertThrows(ArithmeticException.class, () -> validNumber.isZeroNumber(0));
   }
 }
