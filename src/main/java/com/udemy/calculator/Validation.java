@@ -16,4 +16,8 @@ public class Validation {
     }
     return 0;
   }
+
+  int numberIntegerSquared(Object obj) {
+    return validNumber.doubleToInt(obj) + validNumber.doubleToInt(obj);
+  }
 }
