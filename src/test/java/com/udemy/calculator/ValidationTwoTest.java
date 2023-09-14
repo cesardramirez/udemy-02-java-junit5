@@ -10,7 +10,7 @@ import org.mockito.invocation.InvocationOnMock;
 import org.mockito.stubbing.Answer;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertNull;
+import static org.mockito.BDDMockito.given;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 
@@ -76,7 +76,7 @@ class ValidationTwoTest {
    *   método mockeado.
    */
   @Test
-  void testNumberIntegerSquared() {
+  void testNumberIntegerSquared_withAnswerLambda() {
     Answer<Integer> answer = invocationOnMock -> 7;
     when(validNumber.doubleToInt(7.7)).thenAnswer(answer);
 
@@ -90,7 +90,7 @@ class ValidationTwoTest {
    *   con ese argumento, retornará un 10 (5+5).
    */
   @Test
-  void testNumberIntegerSquaredxx() {
+  void testNumberIntegerSquared_whenAnswerMethod() {
     Answer<Integer> answer = new Answer<Integer>() {
       @Override
       public Integer answer(InvocationOnMock invocation) throws Throwable {
@@ -105,5 +105,31 @@ class ValidationTwoTest {
     when(validNumber.doubleToInt(7.7)).thenAnswer(answer);
 
     assertEquals(8, validation.numberIntegerSquared(7.7));
+  }
+
+  @Test
+  void testAddNumbers_whenPatternAAA() {
+    // Arrange
+    when(validNumber.isValidNumber(4)).thenReturn(true);
+    when(validNumber.isValidNumber(5)).thenReturn(true);
+
+    // Action
+    int result = validation.addNumbers(4, 5);
+
+    // Assert
+    assertEquals(9, result);
+  }
+
+  @Test
+  void testAddNumbers_whenPatternGWT() {
+    // Given
+    given(validNumber.isValidNumber(4)).willReturn(true);
+    given(validNumber.isValidNumber(5)).willReturn(true);
+
+    // When
+    int result = validation.addNumbers(4, 5);
+
+    // Then
+    assertEquals(9, result);
   }
 }
