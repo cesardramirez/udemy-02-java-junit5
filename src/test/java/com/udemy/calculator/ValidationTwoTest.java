@@ -10,6 +10,7 @@ import org.mockito.invocation.InvocationOnMock;
 import org.mockito.stubbing.Answer;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.mockito.ArgumentMatchers.anyInt;
 import static org.mockito.BDDMockito.given;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
@@ -108,7 +109,7 @@ class ValidationTwoTest {
   }
 
   @Test
-  void testAddNumbers_whenPatternAAA() {
+  void testAddNumbers_withPatternAAA() {
     // Arrange
     when(validNumber.isValidNumber(4)).thenReturn(true);
     when(validNumber.isValidNumber(5)).thenReturn(true);
@@ -121,7 +122,7 @@ class ValidationTwoTest {
   }
 
   @Test
-  void testAddNumbers_whenPatternGWT() {
+  void testAddNumbers_withPatternGWT() {
     // Given
     given(validNumber.isValidNumber(4)).willReturn(true);
     given(validNumber.isValidNumber(5)).willReturn(true);
@@ -130,6 +131,32 @@ class ValidationTwoTest {
     int result = validation.addNumbers(4, 5);
 
     // Then
+    assertEquals(9, result);
+  }
+
+  /**
+   * En los métodos when() de mockito, en los parámetros del método a mockear enviamos el valor exacto del argumento
+   *   para que tengamos una respuesta puntual en thenReturn().
+   * Pero, existe la opción de que realmente no nos interesa definir un valor específico
+   *   y que puede ser "cualquiera" o "any".
+   * De esta forma, la definición inicial que es:
+   *   when(mock.method(param)).thenReturn(value)
+   * cambiaría por:
+   *   when(mock.method(any())).thenReturn(value)
+   * así, se define que cualquier valor que se envíe como parámetro esperamos el resultado definido en el value
+   *   para ese método mockeado.
+   * <p>
+   * Los any() pueden ser genéricos o se puede definir su tipo específico anyInt(), anyString(), etc.
+   */
+  @Test
+  void testAddNumbers_withArgumentMatcher() {
+    // Arrange
+    when(validNumber.isValidNumber(anyInt())).thenReturn(true);
+
+    // Action
+    int result = validation.addNumbers(4, 5);
+
+    // Assert
     assertEquals(9, result);
   }
 }
