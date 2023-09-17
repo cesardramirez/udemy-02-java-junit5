@@ -12,6 +12,10 @@ import org.mockito.stubbing.Answer;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.mockito.ArgumentMatchers.anyInt;
 import static org.mockito.BDDMockito.given;
+import static org.mockito.Mockito.atLeast;
+import static org.mockito.Mockito.atMost;
+import static org.mockito.Mockito.never;
+import static org.mockito.Mockito.times;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 
@@ -26,6 +30,9 @@ class ValidationTwoTest {
 
   @Mock
   private ValidNumber validNumber;
+
+  @Mock
+  private Print print;
 
   @BeforeEach
   void setUp() {
@@ -158,5 +165,30 @@ class ValidationTwoTest {
 
     // Assert
     assertEquals(9, result);
+  }
+
+  /**
+   * El método verify() también permite verificar métodos que no tienen un valor por retorno (void) y entre otras cosas, como:
+   *   times() : Define el número deseado de invocaciones esperadas.
+   *   never() : Define que nunca debe ingresar por ese caso.
+   *   atLeast() : Define que al menos debe ingresar un número mínimo de invocaciones.
+   *   atMost() : Define el como mucho debe ingresar un número máximo de invocaciones.
+   */
+  @Test
+  void testAddPrint() {
+    // Arrange
+    when(validNumber.isValidNumber(4)).thenReturn(true);
+
+    // Action
+    validation.addPrint(4, 4);
+
+    // Assert
+    verify(validNumber, times(2)).isValidNumber(4);
+    verify(validNumber, never()).isValidNumber(99);
+    verify(validNumber, atLeast(1)).isValidNumber(4);
+    verify(validNumber, atMost(3)).isValidNumber(4);
+    verify(print).showMessage(anyInt());
+    verify(print).showMessage(8);
+    verify(print, never()).showError();
   }
 }
