@@ -3,6 +3,8 @@ package com.udemy.calculator;
 import com.udemy.util.ValidNumber;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
+import org.mockito.ArgumentCaptor;
+import org.mockito.Captor;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.MockitoAnnotations;
@@ -33,6 +35,9 @@ class ValidationTwoTest {
 
   @Mock
   private Print print;
+
+  @Captor
+  private ArgumentCaptor<Integer> captor;
 
   @BeforeEach
   void setUp() {
@@ -175,7 +180,7 @@ class ValidationTwoTest {
    *   atMost() : Define el como mucho debe ingresar un número máximo de invocaciones.
    */
   @Test
-  void testAddPrint() {
+  void testAddPrint_withVerifyOptionsMethod() {
     // Arrange
     when(validNumber.isValidNumber(4)).thenReturn(true);
 
@@ -190,5 +195,25 @@ class ValidationTwoTest {
     verify(print).showMessage(anyInt());
     verify(print).showMessage(8);
     verify(print, never()).showError();
+  }
+
+  /**
+   * Por medio de Mockito Captor y ArgumentCaptor existe la posibilidad de "capturar" el argumento de un método que está interno
+   *   al método a probar y luego validar su valor.
+   *   Se define el tipo del Captor <Integer> y luego "obtener" el número para luego validar si es el que se envió como argumento.
+   */
+  @Test
+  void testAddPrint_withCaptorArgumentValue() {
+    // Arrange
+    when(validNumber.isValidNumber(4)).thenReturn(true);
+    when(validNumber.isValidNumber(5)).thenReturn(true);
+
+    // Action
+    validation.addPrint(4, 5);
+
+    // Assert
+    //verify(print).showMessage(9);
+    verify(print).showMessage(captor.capture());
+    assertEquals(9, captor.getValue().intValue());
   }
 }
