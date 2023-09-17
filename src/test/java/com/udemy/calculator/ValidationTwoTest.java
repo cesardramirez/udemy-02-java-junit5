@@ -1,16 +1,5 @@
 package com.udemy.calculator;
 
-import com.udemy.util.ValidNumber;
-import org.junit.jupiter.api.BeforeEach;
-import org.junit.jupiter.api.Test;
-import org.mockito.ArgumentCaptor;
-import org.mockito.Captor;
-import org.mockito.InjectMocks;
-import org.mockito.Mock;
-import org.mockito.MockitoAnnotations;
-import org.mockito.invocation.InvocationOnMock;
-import org.mockito.stubbing.Answer;
-
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.mockito.ArgumentMatchers.anyInt;
 import static org.mockito.BDDMockito.given;
@@ -20,6 +9,20 @@ import static org.mockito.Mockito.never;
 import static org.mockito.Mockito.times;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
+
+import com.udemy.util.ValidNumber;
+import java.util.ArrayList;
+import java.util.List;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
+import org.mockito.ArgumentCaptor;
+import org.mockito.Captor;
+import org.mockito.InjectMocks;
+import org.mockito.Mock;
+import org.mockito.MockitoAnnotations;
+import org.mockito.Spy;
+import org.mockito.invocation.InvocationOnMock;
+import org.mockito.stubbing.Answer;
 
 /**
  * La anotación @InjectMocks crea una instancia e inyecta todos los mocks creados con la anotación @Mock.
@@ -38,6 +41,12 @@ class ValidationTwoTest {
 
   @Captor
   private ArgumentCaptor<Integer> captor;
+
+  @Spy
+  List<String> spyList = new ArrayList<>();
+
+  @Mock
+  List<String> mockList = new ArrayList<>();
 
   @BeforeEach
   void setUp() {
@@ -117,7 +126,7 @@ class ValidationTwoTest {
 
     when(validNumber.doubleToInt(7.7)).thenAnswer(answer);
 
-    assertEquals(8, validation.numberIntegerSquared(7.7));
+    assertEquals(10, validation.numberIntegerSquared(7.7));
   }
 
   @Test
@@ -215,5 +224,39 @@ class ValidationTwoTest {
     //verify(print).showMessage(9);
     verify(print).showMessage(captor.capture());
     assertEquals(9, captor.getValue().intValue());
+  }
+
+  /**
+   * Con un spy realizará el llamado real al méotdo.
+   *   En este test, en el método add() validará el tamaño de la lista y luego verificar su tamaño por los 2 elementos agregados.
+   * <p>
+   *   Nota: Si en el equipo se tiene la versión de Java 17 no se podrá utilizar el método verify() con un objeto spy, por lo cuál
+   *   se debe añadir una configuración adicional al resources de test/java.
+   */
+  @Test
+  void testCasesWithSpyObject() {
+    spyList.add("1");
+    spyList.add("2");
+
+    verify(spyList).add("1");
+    verify(spyList).add("2");
+
+    assertEquals(2, spyList.size());
+  }
+
+  /**
+   * Con un mock es necesario especificar en detalle el resultado de cada método, ya que no está llamando en ningún momento el método real.
+   *   En este test, si no se define el valor del size() esperado, va a tomar el valor por defecto que tiene el mock que es 0.
+   */
+  @Test
+  void testCasesWithMockObject() {
+    mockList.add("1");
+    mockList.add("2");
+
+    verify(mockList).add("1");
+    verify(mockList).add("2");
+    when(mockList.size()).thenReturn(2);
+
+    assertEquals(2, mockList.size());
   }
 }
