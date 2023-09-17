@@ -50,7 +50,7 @@ class ValidationTwoTest {
 
   @BeforeEach
   void setUp() {
-    // Inicializa e inyecta los mocks definidos.
+    // Inicializa e inyecta los mocks definidos. Aplica para @InjectMocks y @Mock.
     MockitoAnnotations.openMocks(this);
   }
 
@@ -115,8 +115,8 @@ class ValidationTwoTest {
   void testNumberIntegerSquared_whenAnswerMethod() {
     Answer<Integer> answer = new Answer<Integer>() {
       @Override
-      public Integer answer(InvocationOnMock invocation) throws Throwable {
-        Double param = invocation.getArgument(0, Double.class);
+      public Integer answer(InvocationOnMock invocationOnMock) throws Throwable {
+        Double param = invocationOnMock.getArgument(0, Double.class);
         if (param < 7) {
           return param.intValue();
         }
@@ -230,8 +230,8 @@ class ValidationTwoTest {
    * Con un spy realizará el llamado real al méotdo.
    *   En este test, en el método add() validará el tamaño de la lista y luego verificar su tamaño por los 2 elementos agregados.
    * <p>
-   *   Nota: Si en el equipo se tiene la versión de Java 17 no se podrá utilizar el método verify() con un objeto spy, por lo cuál
-   *   se debe añadir una configuración adicional al resources de test/java.
+   *   Nota: Si en el equipo se tiene la versión de Java 17 (a pesar de que el proyecto está en Java 8) no se podrá utilizar
+   *   el método verify() con un objeto spy, por lo cuál se debe añadir una configuración adicional al resources de test/java.
    */
   @Test
   void testCasesWithSpyObject() {
